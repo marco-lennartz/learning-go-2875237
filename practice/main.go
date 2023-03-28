@@ -1,13 +1,16 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 )
 
 func main() {
 
-	var aString string = "This is Go!"
-	fmt.Println(aString)
-	fmt.Printf("The variable's type is %T\n", aString)
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("Enter your text: ")
+	input, _ := reader.ReadString('\n')
+	fmt.Println("you entered: ", input)
 
 }
