@@ -9,27 +9,46 @@ import (
 	"strings"
 )
 
+var reader = bufio.NewReader(os.Stdin)
+
 func main() {
-	reader := bufio.NewReader(os.Stdin)
 
-	fmt.Print("Value 1: ")
+	value1 := readNumber("Value 1:")
+	value2 := readNumber("Value 2:")
+	operator := readOperator(reader)
+
+	result := 0.0
+	switch operator {
+	case "+":
+		result = value1 + value2
+	case "-":
+		result = value1 - value2
+	case "*":
+		result = value1 * value2
+	case "/":
+		result = value1 / value2
+	}
+	result = math.Round(result*100) / 100
+	fmt.Printf("The result of %v %v %v is %v\n\n", value1, operator, value2, result)
+}
+
+func readNumber(request string) float64 {
+	fmt.Print(request)
 	input1, _ := reader.ReadString('\n')
-	float1, err := strconv.ParseFloat(strings.TrimSpace(input1), 64)
+	value, err := strconv.ParseFloat(strings.TrimSpace(input1), 64)
 	if err != nil {
 		fmt.Println(err)
-		panic("Value 1 must be a number")
+		panic(fmt.Sprintf("%v must be a number", request))
 	}
+	return value
+}
 
-	fmt.Print("Value 2: ")
-	input2, _ := reader.ReadString('\n')
-	float2, err := strconv.ParseFloat(strings.TrimSpace(input2), 64)
-	if err != nil {
-		fmt.Println(err)
-		panic("Value 2 must be a number")
+func readOperator(reader *bufio.Reader) string {
+	fmt.Print("Operator:")
+	input1, _ := reader.ReadString('\n')
+	value := strings.TrimSpace(input1)
+	if len(value) > 1 {
+		panic("Der Operator darf nicht länger als 1 Zeichen sein!")
 	}
-
-	sum := float1 + float2
-	sum = math.Round(sum*100) / 100
-	fmt.Printf("The sum of %v and %v is %v\n\n", float1, float2, sum)
-
+	return value
 }
